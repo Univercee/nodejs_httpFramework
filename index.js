@@ -1,15 +1,17 @@
-import http from 'http'
-import dotenv from 'dotenv'
-dotenv.config()
+import App from './framework/App.js'
+import Router from './framework/Router.js'
 const PORT = process.env.PORT || 8000
 
+//
+const router = new Router()
+router.get('/users', (req, res)=>{
+    res.end("You send request to '/users'")
+})
+router.post('/posts', (req, res)=>{
+    res.end("You send request to '/posts'")
+})
 
-const server = http.createServer((req, res)=>{
-    res.writeHead(200, {
-        'Content-type': 'text/html; charset=utf-8'
-    })
-    res.end("Server is online")
-})
-server.listen(PORT, ()=>{
-    console.log("Server started on PORT "+PORT);
-})
+//
+const app = new App()
+app.addRouter(router)
+app.listen(PORT, ()=>{console.log("Server is online");})
