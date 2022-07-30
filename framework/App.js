@@ -1,11 +1,18 @@
 import http from "http" 
 import EventEmitter from 'events'
+import DB from "./DB.js"
 
 export default class App{
     constructor(){
         this.emitter = new EventEmitter()
         this.server = this._createServer()
         this.middlewares = []
+        this.database = null
+    }
+
+    make_db_connection(host, port, user, password, database){
+        this.database = new DB(host, port, user, password, database)
+        this.database.connect()
     }
 
     listen(port, callback){
