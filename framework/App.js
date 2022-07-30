@@ -5,10 +5,15 @@ export default class App{
     constructor(){
         this.emitter = new EventEmitter()
         this.server = this._createServer()
+        this.middlewares = []
     }
 
     listen(port, callback){
         this.server.listen(port, callback)
+    }
+
+    use(middleware){
+        this.middlewares.push(middleware)
     }
 
     addRouter(router){
@@ -17,6 +22,7 @@ export default class App{
             Object.keys(endpoint).forEach((method)=>{
                 const handler = endpoint[method]
                 this.emitter.on(this._getRouterMask(path, method), (req, res)=>{
+                    this.middlewares.forEach(middleware => middleware(req, res))
                     handler(req, res)
                 })
             })
@@ -25,10 +31,19 @@ export default class App{
 
     _createServer(){
         return http.createServer((req, res)=>{
-            const emitted = this.emitter.emit(this._getRouterMask(req.url, req.method), req, res)
-            if(!emitted){
-                res.end()
-            }
+            let body = ""
+            req.on('data', (chunk)=>{
+                body += chunk
+            })
+            req.on('end', ()=>{
+                if(body){
+                    req.body = JSON.parse(body)
+                }
+                const emitted = this.emitter.emit(this._getRouterMask(req.url, req.method), req, res)
+                if(!emitted){
+                    res.end()
+                }
+            })
         })
     }
 
