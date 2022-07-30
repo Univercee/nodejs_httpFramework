@@ -18,3 +18,5 @@ app.make_db_connection(HOST, DB_PORT, USER, PASSWORD, DATABASE)
 app.use(parseJson)
 app.use(parseUrl(BASE_URL))
 app.listen(PORT, ()=>{console.log(`Server is online on PORT ${PORT}`);})
+
+export {app}

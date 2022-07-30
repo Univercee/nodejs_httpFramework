@@ -1,19 +1,19 @@
-const users = [
-    {id: 1, name: "Alex"},
-    {id: 2, name: "Ben"}
-];
+import {db_getUser, db_getUsers, db_addUser} from './model.js'
 
-const getUsers = (req, res)=>{
+const getUsers = async  (req, res)=>{
     if(req.params.id){
-        res.send(users.find(user => user.id == req.params.id))
-        return
+        const user = await db_getUser(req.params.id)
+        res.send(user)
     }
-    res.send(users)
+    else{
+        const users = await db_getUsers()
+        res.send(users)
+    }
 }
 
-const addUser = (req, res)=>{
+const addUser = async (req, res)=>{
     let user = req.body
-    users.push(user)
+    await db_addUser(user)
     res.send(user)
 }
 

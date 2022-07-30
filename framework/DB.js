@@ -10,7 +10,21 @@ export default class DB{
     }
 
     query(query){
-        return this.connection.query(query)
+        return new Promise((resolve, reject)=>{
+            this.connection.query(query, (err, result)=>{
+                if(err){
+                    reject(new Error(err))
+                }
+                else if(result){
+                    result = JSON.parse(JSON.stringify(result))
+                    resolve(result)
+                }
+                else{
+                    resolve()
+                }
+                
+            })
+        })
     }
 
     connect(){
