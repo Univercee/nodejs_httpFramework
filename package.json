@@ -2,14 +2,15 @@
   "name": "http_framework",
   "version": "1.0.0",
   "description": "simple http framework like express",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "github.com/Univercee/nodejs_httpFramework"
+    "start": "nodemon ./index.js"
   },
   "author": "Univercee",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "nodemon": "^2.0.19"
+  }
 }
